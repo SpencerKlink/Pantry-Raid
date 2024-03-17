@@ -88,3 +88,4 @@ function removeFavorite(recipeTitle, event) {
         localStorage.setItem('favorites', JSON.stringify(favorites));
         showFavorites(); 
     }
+}
