@@ -26,23 +26,8 @@ document.getElementById("recipeForm").addEventListener("submit", function (e) {
       var recipesHtml = "";
 
       // grab used ingredients from data and put them into a string
-      console.log(data);
-
-      var recipeString = "";
-      var ingredientData = data[0]["usedIngredients"];
-      console.log(ingredientData);
-
-      for (let i = 0; i < ingredientData.length; i++) {
-        var amount = ingredientData[i]["amount"];
-        var unitMeasurement = ingredientData[i]["unit"];
-        var ingredientName = ingredientData[i]["name"];
-
-        recipeString += `${amount} ${unitMeasurement} ${ingredientName}, `;
-      }
-
-      console.log(recipeString);
-      getNutritionInfo(recipeString);
-      // -----------------------------------------------------------
+      stringifyRecipeIngredients(data);
+    
 
       data.forEach((recipe) => {
         recipesHtml += `<div class="recipe-card"><h3>${recipe.title}</h3><img src="${recipe.image}" alt="Image of ${recipe.title}"></div>`;
@@ -54,6 +39,34 @@ document.getElementById("recipeForm").addEventListener("submit", function (e) {
       document.getElementById("recipes").innerHTML = "<p>Please try again.</p>";
     });
 });
+
+function getRecipeUrl(recipeData) {
+  var id = recipeData[0]["id"];
+  var title = recipeData[0]["title"].replaceAll(" ", "-");
+  var recipeUrl = `spoonacular.com/${title}-${id}`
+  console.log("url", title);
+  console.log(recipeUrl)
+}
+
+function stringifyRecipeIngredients(recipeData) {
+  console.log(recipeData);
+
+  var recipeString = "";
+  var ingredientData = recipeData[0]["usedIngredients"];
+  console.log(ingredientData);
+
+  for (let i = 0; i < ingredientData.length; i++) {
+    var amount = ingredientData[i]["amount"];
+    var unitMeasurement = ingredientData[i]["unit"];
+    var ingredientName = ingredientData[i]["name"];
+
+    recipeString += `${amount} ${unitMeasurement} ${ingredientName}, `;
+  }
+
+  getRecipeUrl(recipeData);
+  console.log(recipeString);
+  getNutritionInfo(recipeString);
+}
 
 function getNutritionInfo(ingredientsArg) {
   var appID = "3f16e02e";
@@ -95,8 +108,11 @@ function getNutritionInfo(ingredientsArg) {
         sodium += nutritionData[i]["nf_sodium"];
       }
       console.log(
-        `Cals:${Math.ceil(cals)}\nFats:${Math.ceil(fats)}\nCarbs: ${Math.ceil(carbs)}\nProteins: ${Math.ceil(proteins)}\nSugars: ${Math.ceil(sugars)}\nSodium: ${Math.ceil(sodium)}`
+        `Cals:${Math.ceil(cals)}\nFats:${Math.ceil(fats)}\nCarbs: ${Math.ceil(
+          carbs
+        )}\nProteins: ${Math.ceil(proteins)}\nSugars: ${Math.ceil(
+          sugars
+        )}\nSodium: ${Math.ceil(sodium)}`
       );
     });
-    
 }
