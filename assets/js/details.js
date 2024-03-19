@@ -25,13 +25,23 @@ function stringifyRecipeIngredients(recipeData) {
   console.log(recipeData);
 
   var recipeString = "";
-  var ingredientData = recipeData["usedIngredients"];
-  console.log(ingredientData);
+  var usedIngredientData = recipeData["usedIngredients"];
+  var missedIngredientData = recipeData["missedIngredients"]
+  console.log(usedIngredientData);
 
-  for (let i = 0; i < ingredientData.length; i++) {
-    var amount = ingredientData[i]["amount"];
-    var unitMeasurement = ingredientData[i]["unit"];
-    var ingredientName = ingredientData[i]["name"];
+  for (let i = 0; i < usedIngredientData.length; i++) {
+    var amount = usedIngredientData[i]["amount"];
+    var unitMeasurement = usedIngredientData[i]["unitLong"];
+    var ingredientName = usedIngredientData[i]["name"];
+    recipeString += `${amount} ${unitMeasurement} ${ingredientName}, `;
+    console.log(ingredientName);
+  }
+
+  // added loop to add missing ingredients to ingredient list and nutrition facts
+  for (let i = 0; i < missedIngredientData.length; i++) {
+    var amount = missedIngredientData[i]["amount"];
+    var unitMeasurement = missedIngredientData[i]["unitLong"];
+    var ingredientName = missedIngredientData[i]["name"];
     recipeString += `${amount} ${unitMeasurement} ${ingredientName}, `;
     console.log(ingredientName);
   }
@@ -39,12 +49,12 @@ function stringifyRecipeIngredients(recipeData) {
   getRecipeUrl(recipeData);
   displayRecipeDetails(recipeData);
   displayIngredients(recipeString);
-getNutritionInfo(recipeString);
+  getNutritionInfo(recipeString);
 }
 
 function displayIngredients(recipeString) {
   var recipeIngredientsEl = document.getElementById("recipeIngredients");
-  var ingredientsArray = recipeString.split(',');
+  var ingredientsArray = recipeString.split(",");
   for (let i = 0; i < ingredientsArray.length; i++) {
     var ingredientListItem = document.createElement("li");
     ingredientListItem.textContent = ingredientsArray[i];
