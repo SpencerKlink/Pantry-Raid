@@ -49,7 +49,7 @@ function stringifyRecipeIngredients(recipeData) {
   getRecipeUrl(recipeData);
   displayRecipeDetails(recipeData);
   displayIngredients(recipeString);
-  getNutritionInfo(recipeString);
+//   getNutritionInfo(recipeString);
 }
 
 function displayIngredients(recipeString) {
