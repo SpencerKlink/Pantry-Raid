@@ -2,15 +2,14 @@ var recipeData = JSON.parse(localStorage.getItem("currentRecipeData"));
 
 stringifyRecipeIngredients(recipeData);
 
-
 function displayRecipeDetails(recipeData) {
-    var detailsElement = document.getElementById('recipeDetails');
-    var recipeUrl = `https://spoonacular.com/recipes/${recipeData}`;
-    var html = `
-        <h2>${recipeData.title}</h2>
+  var detailsElement = document.getElementById("recipeDetails");
+  var titleEl = document.getElementById("recipeTitle");
+  var html = `
         <img src="${recipeData.image}" alt="Image of ${recipeData.title}" />
     `;
-    detailsElement.innerHTML = html;
+  detailsElement.innerHTML = html;
+  titleEl.innerHTML = recipeData.title;
 }
 
 function getRecipeUrl(recipeData) {
@@ -34,14 +33,24 @@ function stringifyRecipeIngredients(recipeData) {
     var unitMeasurement = ingredientData[i]["unit"];
     var ingredientName = ingredientData[i]["name"];
     recipeString += `${amount} ${unitMeasurement} ${ingredientName}, `;
-    console.log(ingredientName)
+    console.log(ingredientName);
   }
 
   getRecipeUrl(recipeData);
   displayRecipeDetails(recipeData);
-  getNutritionInfo(recipeString);
+  displayIngredients(recipeString);
+getNutritionInfo(recipeString);
 }
 
+function displayIngredients(recipeString) {
+  var recipeIngredientsEl = document.getElementById("recipeIngredients");
+  var ingredientsArray = recipeString.split(',');
+  for (let i = 0; i < ingredientsArray.length; i++) {
+    var ingredientListItem = document.createElement("li");
+    ingredientListItem.textContent = ingredientsArray[i];
+    recipeIngredientsEl.append(ingredientListItem);
+  }
+}
 
 function getRecipeInstructions(recipeUrlArg) {
   fetch(recipeUrlArg)
@@ -71,8 +80,8 @@ function fetchNutritionalInfo(recipeId) {
 
 function displayNutritionData(data) {
   var detailsElement = document.getElementById("nutritionDetails");
-  console.log(data)
-  console.log(data.foods)
+  console.log(data);
+  console.log(data.foods);
   if (data.foods && data.foods.length > 0) {
     var nutritionInfo = data.foods
       .map((food) => `<p>${food.food_name}: ${food.nf_calories} calories</p>`)
@@ -91,12 +100,10 @@ function getRecipeInstructions(recipeUrlArg) {
       var doc = parser.parseFromString(html, "text/html");
       var paragraph = doc.querySelector(".recipeInstructions");
       var paragraphText = paragraph.textContent; // Get the text content of the paragraph
-      console.log("------paragraph--------");
-      console.log(paragraphText);
       var recipeInstructionsEl = document.getElementById("recipeInstructions");
       recipeInstructionsEl.innerHTML =
         paragraphText +
-        ` <a href=${recipeUrlArg}>For more info go to Spoonacular</>`;
+        ` <a href="${recipeUrlArg}">For more info go to Spoonacular</a>`;
     })
     .catch((error) => console.error("Error fetching the webpage:", error));
 }
