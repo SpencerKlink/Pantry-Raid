@@ -2,8 +2,11 @@ document.getElementById("recipeForm").addEventListener("submit", function (e) {
   e.preventDefault();
   var ingredients = document.getElementById("ingredientsInput").value.trim();
   console.log("Ingredients submitted:", ingredients);
-  var apiKey = "822983c348234fbba4210ca9dee9fecd";
-  var apiUrl = `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients}&apiKey=${apiKey}`;
+  var allowedMissing =
+    document.getElementById("missingIngredients").value || "0";
+  // var apiKey = "822983c348234fbba4210ca9dee9fecd";
+  var apiKey = "6672e8c409a545128086b53cfbae1d59";
+  var apiUrl = `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients}&apiKey=${apiKey}&number=10&ignorePantry=true&ranking=1`;
 
   if (!ingredients) {
     console.log("No ingredients entered.");
@@ -18,8 +21,7 @@ document.getElementById("recipeForm").addEventListener("submit", function (e) {
     .then((data) => {
       var recipesHtml = "";
       data.forEach((recipe) => {
-        //add missedIngredientCount condition to narrow search results within 2 missing ingredients
-        if (recipe.missedIngredientCount < 3) { 
+        if (recipe.missedIngredientCount < allowedMissing) {
           recipesHtml += `<div class="recipe-card">
               <h3 class="recipe-title" data-recipe='${JSON.stringify(
                 recipe
@@ -33,10 +35,11 @@ document.getElementById("recipeForm").addEventListener("submit", function (e) {
         }
       });
       if (recipesHtml.length === 0) {
-        console.log(recipesHtml.length)
-        document.getElementById("recipes").innerHTML = '<p>No matching recipes. Please try again</p>'
+        console.log(recipesHtml.length);
+        document.getElementById("recipes").innerHTML =
+          "<p>No matching recipes. Please try again</p>";
       } else {
-      document.getElementById("recipes").innerHTML = recipesHtml;
+        document.getElementById("recipes").innerHTML = recipesHtml;
       }
     })
     .catch((error) => {

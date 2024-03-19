@@ -26,7 +26,7 @@ function stringifyRecipeIngredients(recipeData) {
 
   var recipeString = "";
   var usedIngredientData = recipeData["usedIngredients"];
-  var missedIngredientData = recipeData["missedIngredients"]
+  var missedIngredientData = recipeData["missedIngredients"];
   console.log(usedIngredientData);
 
   for (let i = 0; i < usedIngredientData.length; i++) {
@@ -68,7 +68,9 @@ function getRecipeInstructions(recipeUrlArg) {
     .then((html) => {
       var parser = new DOMParser();
       var doc = parser.parseFromString(html, "text/html");
-      var paragraph = doc.querySelector(".recipeInstructions") ||  doc.querySelector("#detailedInstructionsMention");
+      var paragraph =
+        doc.querySelector(".recipeInstructions") ||
+        doc.querySelector("#detailedInstructionsMention");
       var paragraphText = paragraph.innerHTML; // Get the text content of the paragraph
       console.log(paragraphText);
       var recipeInstructionsEl = document.getElementById("recipeInstructions");
@@ -106,8 +108,10 @@ function displayNutritionData(data) {
 }
 
 function getNutritionInfo(ingredientsArg) {
-  var appID = "3f16e02e";
-  var appKey = "548ad8877714b47becab16723c1f292f";
+//   var appID = "3f16e02e";
+//   var appKey = "548ad8877714b47becab16723c1f292f";
+  var appID = "c801545b";
+  var appKey = "a70cf301943e3e0868d65610e47736c3";
   var url = "https://trackapi.nutritionix.com/v2/natural/nutrients";
 
   fetch(url, {
