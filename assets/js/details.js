@@ -49,7 +49,7 @@ function stringifyRecipeIngredients(recipeData) {
   getRecipeUrl(recipeData);
   displayRecipeDetails(recipeData);
   displayIngredients(recipeString);
-  getNutritionInfo(recipeString);
+//   getNutritionInfo(recipeString);
 }
 
 function displayIngredients(recipeString) {
@@ -68,12 +68,15 @@ function getRecipeInstructions(recipeUrlArg) {
     .then((html) => {
       var parser = new DOMParser();
       var doc = parser.parseFromString(html, "text/html");
-      var paragraph = doc.querySelector(".recipeInstructions");
-      var paragraphText = paragraph.textContent; // Get the text content of the paragraph
+      var paragraph = doc.querySelector(".recipeInstructions") ||  doc.querySelector("#detailedInstructionsMention");
+      var paragraphText = paragraph.innerHTML; // Get the text content of the paragraph
       console.log(paragraphText);
+      var recipeInstructionsEl = document.getElementById("recipeInstructions");
+      recipeInstructionsEl.innerHTML =
+        paragraphText +
+        ` <a href="${recipeUrlArg}">For more visit Spoonacular.com</a>`;
     })
     .catch((error) => console.error("Error fetching the webpage:", error));
-  return paragraphText;
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -100,22 +103,6 @@ function displayNutritionData(data) {
   } else {
     detailsElement.innerHTML = "<p>No nutritional data found.</p>";
   }
-}
-
-function getRecipeInstructions(recipeUrlArg) {
-  fetch(recipeUrlArg)
-    .then((response) => response.text())
-    .then((html) => {
-      var parser = new DOMParser();
-      var doc = parser.parseFromString(html, "text/html");
-      var paragraph = doc.querySelector(".recipeInstructions");
-      var paragraphText = paragraph.textContent; // Get the text content of the paragraph
-      var recipeInstructionsEl = document.getElementById("recipeInstructions");
-      recipeInstructionsEl.innerHTML =
-        paragraphText +
-        ` <a href="${recipeUrlArg}">For more info go to Spoonacular</a>`;
-    })
-    .catch((error) => console.error("Error fetching the webpage:", error));
 }
 
 function getNutritionInfo(ingredientsArg) {
