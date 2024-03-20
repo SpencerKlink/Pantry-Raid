@@ -15,6 +15,7 @@ document.getElementById("recipeForm").addEventListener("submit", function (e) {
   }
 
   document.getElementById("searchResults").classList.remove("hidden");
+  document.getElementById("resultsTitle").textContent = "Your Results"
 
   fetch(apiUrl)
     .then((response) => response.json())
@@ -75,9 +76,11 @@ document.getElementById("showFavorites").addEventListener("click", function () {
 
 function showFavorites() {
   document.getElementById("searchResults").classList.remove("hidden");
+  var resultTitleEl = document.getElementById("resultsTitle");
+  resultTitleEl.textContent = "Your Favorites"
   var favorites = JSON.parse(localStorage.getItem("favorites")) || [];
   console.log("Current favorites:", favorites);
-  var favoritesHtml = "<h2>Your Favorite Recipes</h2><ul>";
+  var favoritesHtml = "<ul>";
   for (let i = 0; i < favorites.length; i++) {
     var favorite = favorites[i];
     favoritesHtml +=
@@ -118,7 +121,7 @@ document.addEventListener("click", function (event) {
 });
 
 function loadSessionStorage() {
-  var sessionData = JSON.parse(sessionStorage.getItem("searchResults"));
+  var sessionData = JSON.parse(sessionStorage.getItem("searchResults")) || [];
   var recipesHtml = "";
   if (sessionData) {
     sessionData.forEach((recipe) => {
@@ -131,12 +134,12 @@ function loadSessionStorage() {
         /'/g,
         "\\'"
       )}')">❤️</button></div>`;
-      });
-      document.getElementById("recipes").innerHTML = recipesHtml;
-      document.getElementById("searchResults").classList.remove("hidden");
-  } 
+    });
+    document.getElementById("recipes").innerHTML = recipesHtml;
+    document.getElementById("searchResults").classList.remove("hidden");
+    console.log("results pulled from session storage")
+  }
 }
 
+
 loadSessionStorage();
-
-
