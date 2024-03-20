@@ -4,8 +4,8 @@ document.getElementById("recipeForm").addEventListener("submit", function (e) {
   console.log("Ingredients submitted:", ingredients);
   var allowedMissing =
     document.getElementById("missingIngredients").value || "0";
-  // var apiKey = "822983c348234fbba4210ca9dee9fecd";
-  var apiKey = "6672e8c409a545128086b53cfbae1d59";
+  var apiKey = "822983c348234fbba4210ca9dee9fecd";
+  // var apiKey = "6672e8c409a545128086b53cfbae1d59";
   var apiUrl = `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients}&apiKey=${apiKey}&number=10&ignorePantry=true&ranking=1`;
 
   if (!ingredients) {
@@ -20,6 +20,7 @@ document.getElementById("recipeForm").addEventListener("submit", function (e) {
     .then((response) => response.json())
     .then((data) => {
       var recipesHtml = "";
+      var recipeResults = [];
       data.forEach((recipe) => {
         if (recipe.missedIngredientCount < allowedMissing) {
           recipesHtml += `<div class="recipe-card">
@@ -32,6 +33,7 @@ document.getElementById("recipeForm").addEventListener("submit", function (e) {
                 "\\'"
               )}')">❤️</button>
           </div>`;
+          recipeResults.push(recipe);
         }
       });
       if (recipesHtml.length === 0) {
@@ -40,6 +42,7 @@ document.getElementById("recipeForm").addEventListener("submit", function (e) {
           "<p>No matching recipes. Please try again</p>";
       } else {
         document.getElementById("recipes").innerHTML = recipesHtml;
+        sessionStorage.setItem("searchResults", JSON.stringify(recipeResults));
       }
     })
     .catch((error) => {
@@ -53,7 +56,7 @@ document.getElementById("hamburger").addEventListener("click", function () {
   document.getElementById("menu").classList.toggle("hidden");
 });
 
-function toggleFavorite(recipeTitle, ) {
+function toggleFavorite(recipeTitle) {
   console.log("Toggling favorite:", recipeTitle);
   var favorites = JSON.parse(localStorage.getItem("favorites")) || [];
   var index = favorites.indexOf(recipeTitle);
@@ -63,7 +66,6 @@ function toggleFavorite(recipeTitle, ) {
     favorites.push(recipeTitle);
   }
   localStorage.setItem("favorites", JSON.stringify(favorites));
- 
 }
 
 document.getElementById("showFavorites").addEventListener("click", function () {
@@ -114,3 +116,27 @@ document.addEventListener("click", function (event) {
     prepareForDetailsPage(recipeData);
   }
 });
+
+function loadSessionStorage() {
+  var sessionData = JSON.parse(sessionStorage.getItem("searchResults"));
+  var recipesHtml = "";
+  if (sessionData) {
+    sessionData.forEach((recipe) => {
+      recipesHtml += `<div class="recipe-card">
+      <h3 class="recipe-title" data-recipe='${JSON.stringify(
+        recipe
+      )}' style="cursor:pointer;">${recipe.title}</h3>
+      <img src="${recipe.image}" alt="Image of ${recipe.title}" />
+      <button onclick="toggleFavorite('${recipe.title.replace(
+        /'/g,
+        "\\'"
+      )}')">❤️</button></div>`;
+      });
+      document.getElementById("recipes").innerHTML = recipesHtml;
+      document.getElementById("searchResults").classList.remove("hidden");
+  } 
+}
+
+loadSessionStorage();
+
+
