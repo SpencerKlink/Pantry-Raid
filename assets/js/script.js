@@ -13,9 +13,10 @@ document.getElementById("recipeForm").addEventListener("submit", function (e) {
     alert("Please enter at least one ingredient.");
     return;
   }
-
+  clearResults()
   document.getElementById("searchResults").classList.remove("hidden");
-  document.getElementById("resultsTitle").textContent = "Your Results"
+  
+  document.getElementById("resultsTitle").textContent = "Your Results";
 
   fetch(apiUrl)
     .then((response) => response.json())
@@ -42,8 +43,9 @@ document.getElementById("recipeForm").addEventListener("submit", function (e) {
         document.getElementById("recipes").innerHTML =
           "<p>No matching recipes. Please try again</p>";
       } else {
-        document.getElementById("recipes").innerHTML = recipesHtml;
+        // document.getElementById("recipes").innerHTML = recipesHtml;
         sessionStorage.setItem("searchResults", JSON.stringify(recipeResults));
+        loadSessionStorage();
       }
     })
     .catch((error) => {
@@ -77,7 +79,7 @@ document.getElementById("showFavorites").addEventListener("click", function () {
 function showFavorites() {
   document.getElementById("searchResults").classList.remove("hidden");
   var resultTitleEl = document.getElementById("resultsTitle");
-  resultTitleEl.textContent = "Your Favorites"
+  resultTitleEl.textContent = "Your Favorites";
   var favorites = JSON.parse(localStorage.getItem("favorites")) || [];
   console.log("Current favorites:", favorites);
   var favoritesHtml = "<ul>";
@@ -92,7 +94,7 @@ function showFavorites() {
   }
   favoritesHtml += "</ul>";
   document.getElementById("recipes").innerHTML = favoritesHtml;
-  clearSearch()
+  clearSearch();
 }
 
 function removeFavorite(recipeTitle, event) {
@@ -122,7 +124,7 @@ document.addEventListener("click", function (event) {
 });
 
 function loadSessionStorage() {
-  var sessionData = JSON.parse(sessionStorage.getItem("searchResults")) || [];
+  var sessionData = JSON.parse(sessionStorage.getItem("searchResults"));
   var recipesHtml = "";
   if (sessionData) {
     sessionData.forEach((recipe) => {
@@ -138,17 +140,43 @@ function loadSessionStorage() {
     });
     document.getElementById("recipes").innerHTML = recipesHtml;
     document.getElementById("searchResults").classList.remove("hidden");
-    console.log("results pulled from session storage")
+    console.log("results pulled from session storage");
+    createClearButton();
   }
 }
 
 function clearSearch() {
   var ingredientsInputEl = document.getElementById("ingredientsInput");
-  ingredientsInputEl.value = ""
+  ingredientsInputEl.value = "";
   var mealTypeInputEl = document.getElementById("mealType");
-  mealTypeInputEl.value = ""
+  mealTypeInputEl.value = "";
   var missingIngredientsEl = document.getElementById("missingIngredients");
-  missingIngredientsEl.value = ""
+  missingIngredientsEl.value = "";
+}
+
+
+function createClearButton() {
+  var searchResultsEl = document.getElementById("searchResults");
+  var clearButton = document.createElement("button");
+  clearButton.setAttribute("id", "clearButton");
+  clearButton.classList.add("bg-blue-500", "text-white", "p-2", "rounded");
+  clearButton.textContent = "Clear Search";
+  searchResultsEl.append(clearButton);
+
+  clearButton.addEventListener("click", function () {
+    clearResults();
+  });
+}
+
+function clearResults() {
+  var searchResultsEl = document.getElementById("searchResults");
+  var clearButtonEl = document.getElementById("clearButton");
+  sessionStorage.removeItem("searchResults");
+  searchResultsEl.classList.add("hidden");
+  if (clearButtonEl) {
+    searchResultsEl.removeChild(clearButtonEl);
+  }
+  
 }
 
 loadSessionStorage();
