@@ -113,11 +113,11 @@ function displayNutritionData() {
 
       var totalMealNutrition = `<ul>
       <li>Cals:${Math.ceil(cals)}</li>
-      <li>Fats:${Math.ceil(fats)}</li>
-      <li>Carbs: ${Math.ceil(carbs)}</li>
-      <li>Proteins: ${Math.ceil(proteins)}</li>
-      <li>Sugars: ${Math.ceil(sugars)}</li>
-      <li>Sodium: ${Math.ceil(sodium)}</li>
+      <li>Fats:${Math.ceil(fats)}g</li>
+      <li>Carbs: ${Math.ceil(carbs)}g</li>
+      <li>Proteins: ${Math.ceil(proteins)}g</li>
+      <li>Sugars: ${Math.ceil(sugars)}g</li>
+      <li>Sodium: ${Math.ceil(sodium)}mg</li>
       </ul>`;
 
     modalInfoEl.innerHTML = totalMealNutrition;
