@@ -126,21 +126,6 @@ function displayNutritionData() {
   }
 }
 
-// function displayNutritionData() {
-//   // var detailsElement = document.getElementById("nutritionDetails");
-//   var data = JSON.parse(localStorage.getItem("currentRecipeNutrition"))
-//   var modalInfoEl = document.getElementById("nutritionInfo");
-//   console.log(data);
-//   console.log(data.foods);
-//   if (data.foods && data.foods.length > 0) {
-//     var nutritionInfo = data.foods
-//       .map((food) => `<p>${food.food_name}: ${food.nf_calories} calories</p>`)
-//       .join("");
-//     modalInfoEl.innerHTML = nutritionInfo;
-//   } else {
-//     modalInfoEl.innerHTML = "<p>No nutritional data found.</p>";
-//   }
-// }
 
 function getNutritionInfo(ingredientsArg) {
   //   var appID = "3f16e02e";

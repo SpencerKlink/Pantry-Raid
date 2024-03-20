@@ -72,6 +72,7 @@ document.getElementById("showFavorites").addEventListener("click", function () {
 });
 
 function showFavorites() {
+  document.getElementById("searchResults").classList.remove("hidden");
   var favorites = JSON.parse(localStorage.getItem("favorites")) || [];
   console.log("Current favorites:", favorites);
   var favoritesHtml = "<h2>Your Favorite Recipes</h2><ul>";
