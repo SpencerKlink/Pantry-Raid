@@ -13,9 +13,9 @@ document.getElementById("recipeForm").addEventListener("submit", function (e) {
     alert("Please enter at least one ingredient.");
     return;
   }
-  clearResults()
+  clearResults();
   document.getElementById("searchResults").classList.remove("hidden");
-  
+
   document.getElementById("resultsTitle").textContent = "Your Results";
 
   fetch(apiUrl)
@@ -77,6 +77,8 @@ document.getElementById("showFavorites").addEventListener("click", function () {
 });
 
 function showFavorites() {
+  clearSearch();
+  clearResults();
   document.getElementById("searchResults").classList.remove("hidden");
   var resultTitleEl = document.getElementById("resultsTitle");
   resultTitleEl.textContent = "Your Favorites";
@@ -94,7 +96,6 @@ function showFavorites() {
   }
   favoritesHtml += "</ul>";
   document.getElementById("recipes").innerHTML = favoritesHtml;
-  clearSearch();
 }
 
 function removeFavorite(recipeTitle, event) {
@@ -154,7 +155,6 @@ function clearSearch() {
   missingIngredientsEl.value = "";
 }
 
-
 function createClearButton() {
   var searchResultsEl = document.getElementById("searchResults");
   var clearButton = document.createElement("button");
@@ -176,7 +176,6 @@ function clearResults() {
   if (clearButtonEl) {
     searchResultsEl.removeChild(clearButtonEl);
   }
-  
 }
 
 loadSessionStorage();
