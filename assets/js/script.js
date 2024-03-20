@@ -92,6 +92,7 @@ function showFavorites() {
   }
   favoritesHtml += "</ul>";
   document.getElementById("recipes").innerHTML = favoritesHtml;
+  clearSearch()
 }
 
 function removeFavorite(recipeTitle, event) {
@@ -141,5 +142,13 @@ function loadSessionStorage() {
   }
 }
 
+function clearSearch() {
+  var ingredientsInputEl = document.getElementById("ingredientsInput");
+  ingredientsInputEl.value = ""
+  var mealTypeInputEl = document.getElementById("mealType");
+  mealTypeInputEl.value = ""
+  var missingIngredientsEl = document.getElementById("missingIngredients");
+  missingIngredientsEl.value = ""
+}
 
 loadSessionStorage();
