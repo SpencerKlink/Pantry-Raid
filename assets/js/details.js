@@ -49,7 +49,7 @@ function stringifyRecipeIngredients(recipeData) {
   getRecipeUrl(recipeData);
   displayRecipeDetails(recipeData);
   displayIngredients(recipeString);
-//   getNutritionInfo(recipeString);
+  getNutritionInfo(recipeString);
 }
 
 function displayIngredients(recipeString) {
@@ -88,28 +88,63 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-function fetchNutritionalInfo(recipeId) {
-  var ingredients = "Example ingredients list";
-  getNutritionInfo(ingredients);
-}
+function displayNutritionData() {
+  var data = JSON.parse(localStorage.getItem("currentRecipeNutrition"))
+  var modalInfoEl = document.getElementById("nutritionInfo");
 
-function displayNutritionData(data) {
-  var detailsElement = document.getElementById("nutritionDetails");
-  console.log(data);
-  console.log(data.foods);
   if (data.foods && data.foods.length > 0) {
-    var nutritionInfo = data.foods
-      .map((food) => `<p>${food.food_name}: ${food.nf_calories} calories</p>`)
-      .join("");
-    detailsElement.innerHTML = nutritionInfo;
+    nutritionData = data["foods"];
+      console.log(nutritionData);
+      var cals = 0;
+      var fats = 0;
+      var carbs = 0;
+      var proteins = 0;
+      var sugars = 0;
+      var sodium = 0;
+
+      for (let i = 0; i < nutritionData.length; i++) {
+        cals += nutritionData[i]["nf_calories"];
+        fats += nutritionData[i]["nf_total_fat"];
+        carbs += nutritionData[i]["nf_total_carbohydrate"];
+        proteins += nutritionData[i]["nf_protein"];
+        sugars += nutritionData[i]["nf_sugars"];
+        sodium += nutritionData[i]["nf_sodium"];
+      }
+
+      var totalMealNutrition = `<ul>
+      <li>Cals:${Math.ceil(cals)}</li>
+      <li>Fats:${Math.ceil(fats)}</li>
+      <li>Carbs: ${Math.ceil(carbs)}</li>
+      <li>Proteins: ${Math.ceil(proteins)}</li>
+      <li>Sugars: ${Math.ceil(sugars)}</li>
+      <li>Sodium: ${Math.ceil(sodium)}</li>
+      </ul>`;
+
+    modalInfoEl.innerHTML = totalMealNutrition;
   } else {
-    detailsElement.innerHTML = "<p>No nutritional data found.</p>";
+    modalInfoEl.innerHTML = "<p>No nutritional data found.</p>";
   }
 }
 
+// function displayNutritionData() {
+//   // var detailsElement = document.getElementById("nutritionDetails");
+//   var data = JSON.parse(localStorage.getItem("currentRecipeNutrition"))
+//   var modalInfoEl = document.getElementById("nutritionInfo");
+//   console.log(data);
+//   console.log(data.foods);
+//   if (data.foods && data.foods.length > 0) {
+//     var nutritionInfo = data.foods
+//       .map((food) => `<p>${food.food_name}: ${food.nf_calories} calories</p>`)
+//       .join("");
+//     modalInfoEl.innerHTML = nutritionInfo;
+//   } else {
+//     modalInfoEl.innerHTML = "<p>No nutritional data found.</p>";
+//   }
+// }
+
 function getNutritionInfo(ingredientsArg) {
-//   var appID = "3f16e02e";
-//   var appKey = "548ad8877714b47becab16723c1f292f";
+  //   var appID = "3f16e02e";
+  //   var appKey = "548ad8877714b47becab16723c1f292f";
   var appID = "c801545b";
   var appKey = "a70cf301943e3e0868d65610e47736c3";
   var url = "https://trackapi.nutritionix.com/v2/natural/nutrients";
@@ -126,7 +161,25 @@ function getNutritionInfo(ingredientsArg) {
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
-      displayNutritionData(data);
+      localStorage.setItem("currentRecipeNutrition", JSON.stringify(data))
+      
     })
     .catch((error) => console.error("Error fetching nutritional data:", error));
 }
+
+function openModal() {
+  document.getElementById("nutritionModal").classList.remove("hidden");
+  displayNutritionData();
+}
+function closeModal(event) {
+  if (event) {
+    event.stopPropagation();
+  }
+  document.getElementById("nutritionModal").classList.add("hidden");
+}
+document.addEventListener("DOMContentLoaded", () => {
+  var closeModalButton = document.getElementById("closeModalButton");
+  if (closeModalButton) {
+    closeModalButton.addEventListener("click", closeModal);
+  }
+});

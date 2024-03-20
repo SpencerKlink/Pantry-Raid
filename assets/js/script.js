@@ -53,7 +53,7 @@ document.getElementById("hamburger").addEventListener("click", function () {
   document.getElementById("menu").classList.toggle("hidden");
 });
 
-function toggleFavorite(recipeTitle) {
+function toggleFavorite(recipeTitle, ) {
   console.log("Toggling favorite:", recipeTitle);
   var favorites = JSON.parse(localStorage.getItem("favorites")) || [];
   var index = favorites.indexOf(recipeTitle);
@@ -63,6 +63,7 @@ function toggleFavorite(recipeTitle) {
     favorites.push(recipeTitle);
   }
   localStorage.setItem("favorites", JSON.stringify(favorites));
+ 
 }
 
 document.getElementById("showFavorites").addEventListener("click", function () {
