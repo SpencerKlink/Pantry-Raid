@@ -92,6 +92,9 @@ function showFavorites() {
     });
   document.getElementById("recipes").innerHTML = favoritesHtml;
   }
+  if (favorites.length === 0) {
+    document.getElementById("recipes").innerHTML = "<p>No favorites to display</p>";
+  }
 }
 
 function removeFavorite(button) {
