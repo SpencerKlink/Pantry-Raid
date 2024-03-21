@@ -30,10 +30,7 @@ document.getElementById("recipeForm").addEventListener("submit", function (e) {
                 recipe
               )}' style="cursor:pointer;">${recipe.title}</h3>
               <img src="${recipe.image}" alt="Image of ${recipe.title}" />
-              <button onclick="toggleFavorite('${recipe.title.replace(
-                /'/g,
-                "\\'"
-              )}')">❤️</button>
+              <button onclick="toggleFavorite(${recipe})">❤️</button>
           </div>`;
           recipeResults.push(recipe);
         }
@@ -43,7 +40,6 @@ document.getElementById("recipeForm").addEventListener("submit", function (e) {
         document.getElementById("recipes").innerHTML =
           "<p>No matching recipes. Please try again</p>";
       } else {
-        // document.getElementById("recipes").innerHTML = recipesHtml;
         sessionStorage.setItem("searchResults", JSON.stringify(recipeResults));
         loadSessionStorage();
       }
@@ -59,16 +55,13 @@ document.getElementById("hamburger").addEventListener("click", function () {
   document.getElementById("menu").classList.toggle("hidden");
 });
 
-function toggleFavorite(recipeTitle) {
-  console.log("Toggling favorite:", recipeTitle);
-  var favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-  var index = favorites.indexOf(recipeTitle);
-  if (index > -1) {
-    favorites.splice(index, 1);
-  } else {
-    favorites.push(recipeTitle);
-  }
-  localStorage.setItem("favorites", JSON.stringify(favorites));
+function toggleFavorite(button) {
+  console.log("Toggling favorite:");
+  var recipe = JSON.parse(button.getAttribute('data-recipe'));
+
+  var favoritesArray = JSON.parse(localStorage.getItem("favorites")) || [];
+  favoritesArray.push(recipe)
+  localStorage.setItem("favorites", JSON.stringify(favoritesArray));
 }
 
 document.getElementById("showFavorites").addEventListener("click", function () {
@@ -82,34 +75,35 @@ function showFavorites() {
   document.getElementById("searchResults").classList.remove("hidden");
   var resultTitleEl = document.getElementById("resultsTitle");
   resultTitleEl.textContent = "Your Favorites";
+  
   var favorites = JSON.parse(localStorage.getItem("favorites")) || [];
   console.log("Current favorites:", favorites);
-  var favoritesHtml = "<ul>";
-  for (let i = 0; i < favorites.length; i++) {
-    var favorite = favorites[i];
-    favoritesHtml +=
-      "<li>" +
-      favorite +
-      " <button onclick=\"removeFavorite('" +
-      favorite.replace(/'/g, "\\'") +
-      "', event)\">❌</button></li>";
-  }
-  favoritesHtml += "</ul>";
+  var favoritesHtml = ""
+  if (favorites) {
+    favorites.forEach((recipe) => {
+      favoritesHtml += `<div class="recipe-card">
+      <h3 class="recipe-title" data-recipe='${JSON.stringify(
+        recipe
+      )}' style="cursor:pointer;">${recipe.title}</h3>
+      <img src="${recipe.image}" alt="Image of ${recipe.title}" />
+      <button onclick="removeFavorite(this)" data-recipe='${JSON.stringify(
+        recipe
+      )}'>❌</button></div>`;
+    });
   document.getElementById("recipes").innerHTML = favoritesHtml;
+  }
 }
 
-function removeFavorite(recipeTitle, event) {
-  event.stopPropagation();
-  console.log("Removing favorite:", recipeTitle);
-  var favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-  var index = favorites.indexOf(recipeTitle);
-  if (index > -1) {
-    favorites.splice(index, 1);
-    localStorage.setItem("favorites", JSON.stringify(favorites));
-    showFavorites();
+function removeFavorite(button) {
+  var recipe = JSON.parse(button.getAttribute('data-recipe'));
+  var removeRecipeID = recipe.id;
+  
+  var favoritesArray = JSON.parse(localStorage.getItem("favorites"));
+  var newFavoritesArray = favoritesArray.filter(item => item.id !== removeRecipeID);
+  localStorage.setItem("favorites", JSON.stringify(newFavoritesArray));
+  showFavorites();
   }
-}
-// ----------------------------------------------------------------
+
 
 function prepareForDetailsPage(recipeData) {
   console.log("Preparing for details page:", recipeData);
@@ -134,10 +128,9 @@ function loadSessionStorage() {
         recipe
       )}' style="cursor:pointer;">${recipe.title}</h3>
       <img src="${recipe.image}" alt="Image of ${recipe.title}" />
-      <button onclick="toggleFavorite('${recipe.title.replace(
-        /'/g,
-        "\\'"
-      )}')">❤️</button></div>`;
+      <button onclick="toggleFavorite(this)" data-recipe='${JSON.stringify(
+        recipe
+      )}'>❤️</button></div>`;
     });
     document.getElementById("recipes").innerHTML = recipesHtml;
     document.getElementById("searchResults").classList.remove("hidden");
@@ -165,6 +158,7 @@ function createClearButton() {
 
   clearButton.addEventListener("click", function () {
     clearResults();
+    clearSearch();
   });
 }
 
