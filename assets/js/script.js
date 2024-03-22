@@ -209,7 +209,7 @@ function clearAlert() {
 
 function generateMissingIngredientsValues() {
   var missingIngredientEl = document.getElementById("missingIngredients");
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i <= 10; i++) {
     var ingredient = document.createElement("option");
     ingredient.setAttribute("value", `${i}`);
     ingredient.textContent = i;
