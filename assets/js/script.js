@@ -11,7 +11,6 @@ document.getElementById("recipeForm").addEventListener("submit", function (e) {
   if (!ingredients) {
     console.log("No ingredients entered.");
     createAlert();
-    // alert("Please enter at least one ingredient.");
 
     return;
   }
