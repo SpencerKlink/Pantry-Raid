@@ -207,4 +207,18 @@ function clearAlert() {
   recipeFormEl.removeChild(alert);
 }
 
+function generateMissingIngredientsValues() {
+  var missingIngredientEl = document.getElementById("missingIngredients");
+  for (let i = 0; i < 10; i++) {
+    var ingredient = document.createElement("option");
+    ingredient.setAttribute("value", `${i}`);
+    ingredient.textContent = i;
+    if (i === 0) {
+      ingredient.textContent = "Allowed Missing Ingredients";
+    }
+    missingIngredientEl.append(ingredient);
+  }
+}
+generateMissingIngredientsValues();
+
 loadSessionStorage();
