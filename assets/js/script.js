@@ -104,20 +104,16 @@ function showFavorites() {
 
 function removeFavorite(button) {
   var recipe = JSON.parse(button.getAttribute("data-recipe"));
-  var recipe = JSON.parse(button.getAttribute("data-recipe"));
   var removeRecipeID = recipe.id;
-
 
   var favoritesArray = JSON.parse(localStorage.getItem("favorites"));
   var newFavoritesArray = favoritesArray.filter(
-    (
-    (item)) => item.id !== removeRecipeID
-  
+    (item) => item.id !== removeRecipeID
   );
   localStorage.setItem("favorites", JSON.stringify(newFavoritesArray));
   showFavorites();
 }
-}
+
 
 function prepareForDetailsPage(recipeData) {
   console.log("Preparing for details page:", recipeData);
