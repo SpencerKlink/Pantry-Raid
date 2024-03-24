@@ -26,7 +26,7 @@ document.getElementById("recipeForm").addEventListener("submit", function (e) {
       var recipeResults = [];
       data.forEach((recipe) => {
         if (recipe.missedIngredientCount < allowedMissing) {
-          recipesHtml += `<div class="recipe-card my-5">
+          recipesHtml += `<div class="recipe-card my-8">
               <img src="${recipe.image}" alt="Image of ${recipe.title}" />
               <h3 class="recipe-title" data-recipe='${JSON.stringify(
                 recipe
@@ -59,11 +59,19 @@ document.getElementById("hamburger").addEventListener("click", function () {
 function toggleFavorite(button) {
   console.log("Toggling favorite:");
   var recipe = JSON.parse(button.getAttribute("data-recipe"));
-  var recipe = JSON.parse(button.getAttribute("data-recipe"));
-
   var favoritesArray = JSON.parse(localStorage.getItem("favorites")) || [];
-  favoritesArray.push(recipe);
-  localStorage.setItem("favorites", JSON.stringify(favoritesArray));
+  var favoritesID = []
+  favoritesArray.forEach((favoriteRecipe) => {
+    favoritesID.push(favoriteRecipe.id);
+    console.log(favoritesID)
+  })
+    if (!favoritesID.includes(recipe.id)){
+      console.log("not in favorites")
+      favoritesArray.push(recipe);
+      localStorage.setItem("favorites", JSON.stringify(favoritesArray));
+    } else {
+      console.log("already in favorites")
+    }
 }
 
 document.getElementById("showFavorites").addEventListener("click", function () {
@@ -104,7 +112,7 @@ function showFavorites() {
   var favoritesHtml = "";
   if (favorites) {
     favorites.forEach((recipe) => {
-      favoritesHtml += `<div class=""recipe-card my-4 text-center"">
+      favoritesHtml += `<div class=""recipe-card my-8 text-center"">
       <img class="mx-auto my-2" src="${recipe.image}" alt="Image of ${recipe.title}" />
       <h3 class="recipe-title recipe-title inline mx-4 font-bold" data-recipe='${JSON.stringify(
         recipe
@@ -151,7 +159,7 @@ function loadSessionStorage() {
   var recipesHtml = "";
   if (sessionData) {
     sessionData.forEach((recipe) => {
-      recipesHtml += `<div class="recipe-card my-4 text-center">
+      recipesHtml += `<div class="recipe-card my-8 text-center">
       <img class="mx-auto my-2" src="${
         recipe.image
       }" alt="Image of ${recipe.title}" />
