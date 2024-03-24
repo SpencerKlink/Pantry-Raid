@@ -26,8 +26,10 @@ document.getElementById("recipeForm").addEventListener("submit", function (e) {
       var recipeResults = [];
       data.forEach((recipe) => {
         if (recipe.missedIngredientCount < allowedMissing) {
-          recipesHtml += `<div class="recipe-card my-8">
-              <img class="mx-auto my-2 w-500" src="${recipe.image}" alt="Image of ${recipe.title}" />
+          recipesHtml += `<div class="recipe-card my-3 md:hover:opacity-60 flex flex-col h-full">
+              <img class="mx-auto my-2 w-500" src="${
+                recipe.image
+              }" alt="Image of ${recipe.title}" />
               <h3 class="recipe-title" data-recipe='${JSON.stringify(
                 recipe
               )}' style="cursor:pointer;">${recipe.title}</h3>
@@ -60,18 +62,18 @@ function toggleFavorite(button) {
   console.log("Toggling favorite:");
   var recipe = JSON.parse(button.getAttribute("data-recipe"));
   var favoritesArray = JSON.parse(localStorage.getItem("favorites")) || [];
-  var favoritesID = []
+  var favoritesID = [];
   favoritesArray.forEach((favoriteRecipe) => {
     favoritesID.push(favoriteRecipe.id);
-    console.log(favoritesID)
-  })
-    if (!favoritesID.includes(recipe.id)){
-      console.log("not in favorites")
-      favoritesArray.push(recipe);
-      localStorage.setItem("favorites", JSON.stringify(favoritesArray));
-    } else {
-      console.log("already in favorites")
-    }
+    console.log(favoritesID);
+  });
+  if (!favoritesID.includes(recipe.id)) {
+    console.log("not in favorites");
+    favoritesArray.push(recipe);
+    localStorage.setItem("favorites", JSON.stringify(favoritesArray));
+  } else {
+    console.log("already in favorites");
+  }
 }
 
 document.getElementById("showFavorites").addEventListener("click", function () {
@@ -84,21 +86,23 @@ document.addEventListener("DOMContentLoaded", () => {
   var howToUseModal = document.getElementById("howToUseModal");
 
   howToUseBtn.addEventListener("click", () => {
-      howToUseModal.classList.toggle("hidden");
+    howToUseModal.classList.toggle("hidden");
   });
 
   howToUseModal.addEventListener("click", (event) => {
-      if (event.target === howToUseModal) {
-          howToUseModal.classList.add("hidden");
-      }
+    if (event.target === howToUseModal) {
+      howToUseModal.classList.add("hidden");
+    }
   });
-  
-  document.querySelectorAll('#howToUseModal [onclick="toggleModal()"]').forEach(button => {
+
+  document
+    .querySelectorAll('#howToUseModal [onclick="toggleModal()"]')
+    .forEach((button) => {
       button.addEventListener("click", () => {
-          howToUseModal.classList.add("hidden");
+        howToUseModal.classList.add("hidden");
       });
-  });
-});    
+    });
+});
 
 function showFavorites() {
   clearSearch();
@@ -112,8 +116,10 @@ function showFavorites() {
   var favoritesHtml = "";
   if (favorites) {
     favorites.forEach((recipe) => {
-      favoritesHtml += `<div class="recipe-card my-8 text-center">
-      <img class="mx-auto my-2 w-500" src="${recipe.image}" alt="Image of ${recipe.title}" />
+      favoritesHtml += `<div class="recipe-card my-3 text-center md:hover:opacity-60 flex flex-col h-full">
+      <img class="mx-auto my-2 w-500" src="${recipe.image}" alt="Image of ${
+        recipe.title
+      }" />
       <h3 class="recipe-title recipe-title inline mx-4 font-bold" data-recipe='${JSON.stringify(
         recipe
       )}' style="cursor:pointer;">${recipe.title}</h3>
@@ -159,10 +165,10 @@ function loadSessionStorage() {
   var recipesHtml = "";
   if (sessionData) {
     sessionData.forEach((recipe) => {
-      recipesHtml += `<div class="recipe-card my-8 text-center">
-      <img class="mx-auto my-2 w-500" src="${
-        recipe.image
-      }" alt="Image of ${recipe.title}" />
+      recipesHtml += `<div class="recipe-card my-3 text-center md:hover:opacity-60 flex flex-col h-full">
+      <img class="mx-auto my-2 w-500" src="${recipe.image}" alt="Image of ${
+        recipe.title
+      }" />
       <h3 class="recipe-title inline mx-4 font-bold" data-recipe='${JSON.stringify(
         recipe
       )}' style="cursor:pointer;">${recipe.title}</h3>
@@ -188,11 +194,18 @@ function clearSearch() {
 
 function createClearButton() {
   var searchResultsEl = document.getElementById("searchResults");
+  var buttonContainer = document.createElement("div");
+  buttonContainer.setAttribute("id", "buttonContainer");
+  buttonContainer.classList.add("flex", "justify-center");
   var clearButton = document.createElement("button");
   clearButton.setAttribute("id", "clearButton");
-  clearButton.classList.add("bg-blue-500", "text-white", "p-2", "rounded");
+  clearButton.classList.add("bg-green-500", "text-white", "p-2", "rounded");
   clearButton.textContent = "Clear Search";
-  searchResultsEl.append(clearButton);
+
+  buttonContainer.append(clearButton);
+  searchResultsEl.append(buttonContainer);
+
+  // searchResultsEl.append(clearButton);
 
   clearButton.addEventListener("click", function () {
     clearResults();
@@ -202,11 +215,13 @@ function createClearButton() {
 
 function clearResults() {
   var searchResultsEl = document.getElementById("searchResults");
-  var clearButtonEl = document.getElementById("clearButton");
+  // var clearButtonEl = document.getElementById("clearButton");
+  var buttonContainerEl = document.getElementById("buttonContainer");
   sessionStorage.removeItem("searchResults");
   searchResultsEl.classList.add("hidden");
-  if (clearButtonEl) {
-    searchResultsEl.removeChild(clearButtonEl);
+  if (buttonContainerEl) {
+    searchResultsEl.removeChild(buttonContainerEl);
+    // searchResultsEl.removeChild(clearButtonEl);
   }
 }
 
