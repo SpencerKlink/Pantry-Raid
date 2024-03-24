@@ -26,11 +26,11 @@ document.getElementById("recipeForm").addEventListener("submit", function (e) {
       var recipeResults = [];
       data.forEach((recipe) => {
         if (recipe.missedIngredientCount < allowedMissing) {
-          recipesHtml += `<div class="recipe-card">
+          recipesHtml += `<div class="recipe-card my-8">
+              <img class="mx-auto my-2 w-500" src="${recipe.image}" alt="Image of ${recipe.title}" />
               <h3 class="recipe-title" data-recipe='${JSON.stringify(
                 recipe
               )}' style="cursor:pointer;">${recipe.title}</h3>
-              <img src="${recipe.image}" alt="Image of ${recipe.title}" />
               <button onclick="toggleFavorite(${recipe})">❤️</button>
           </div>`;
           recipeResults.push(recipe);
@@ -59,17 +59,46 @@ document.getElementById("hamburger").addEventListener("click", function () {
 function toggleFavorite(button) {
   console.log("Toggling favorite:");
   var recipe = JSON.parse(button.getAttribute("data-recipe"));
-  var recipe = JSON.parse(button.getAttribute("data-recipe"));
-
   var favoritesArray = JSON.parse(localStorage.getItem("favorites")) || [];
-  favoritesArray.push(recipe);;
-  localStorage.setItem("favorites", JSON.stringify(favoritesArray));
+  var favoritesID = []
+  favoritesArray.forEach((favoriteRecipe) => {
+    favoritesID.push(favoriteRecipe.id);
+    console.log(favoritesID)
+  })
+    if (!favoritesID.includes(recipe.id)){
+      console.log("not in favorites")
+      favoritesArray.push(recipe);
+      localStorage.setItem("favorites", JSON.stringify(favoritesArray));
+    } else {
+      console.log("already in favorites")
+    }
 }
 
 document.getElementById("showFavorites").addEventListener("click", function () {
   console.log("Showing favorites");
   showFavorites();
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  var howToUseBtn = document.getElementById("howToUseBtn");
+  var howToUseModal = document.getElementById("howToUseModal");
+
+  howToUseBtn.addEventListener("click", () => {
+      howToUseModal.classList.toggle("hidden");
+  });
+
+  howToUseModal.addEventListener("click", (event) => {
+      if (event.target === howToUseModal) {
+          howToUseModal.classList.add("hidden");
+      }
+  });
+  
+  document.querySelectorAll('#howToUseModal [onclick="toggleModal()"]').forEach(button => {
+      button.addEventListener("click", () => {
+          howToUseModal.classList.add("hidden");
+      });
+  });
+});    
 
 function showFavorites() {
   clearSearch();
@@ -78,26 +107,24 @@ function showFavorites() {
   var resultTitleEl = document.getElementById("resultsTitle");
   resultTitleEl.textContent = "Your Favorites";
 
-
   var favorites = JSON.parse(localStorage.getItem("favorites")) || [];
   console.log("Current favorites:", favorites);
-  var favoritesHtml = "";;
+  var favoritesHtml = "";
   if (favorites) {
     favorites.forEach((recipe) => {
-      favoritesHtml += `<div class="recipe-card">
-      <h3 class="recipe-title" data-recipe='${JSON.stringify(
+      favoritesHtml += `<div class="recipe-card my-8 text-center">
+      <img class="mx-auto my-2 w-500" src="${recipe.image}" alt="Image of ${recipe.title}" />
+      <h3 class="recipe-title recipe-title inline mx-4 font-bold" data-recipe='${JSON.stringify(
         recipe
       )}' style="cursor:pointer;">${recipe.title}</h3>
-      <img src="${recipe.image}" alt="Image of ${recipe.title}" />
       <button onclick="removeFavorite(this)" data-recipe='${JSON.stringify(
         recipe
       )}'>❌</button></div>`;
     });
-      document.getElementById("recipes").innerHTML = favoritesHtml;
+    document.getElementById("recipes").innerHTML = favoritesHtml;
   }
   if (favorites.length === 0) {
     document.getElementById("recipes").innerHTML =
-     
       "<p>No favorites to display</p>";
   }
 }
@@ -113,7 +140,6 @@ function removeFavorite(button) {
   localStorage.setItem("favorites", JSON.stringify(newFavoritesArray));
   showFavorites();
 }
-
 
 function prepareForDetailsPage(recipeData) {
   console.log("Preparing for details page:", recipeData);
@@ -133,11 +159,13 @@ function loadSessionStorage() {
   var recipesHtml = "";
   if (sessionData) {
     sessionData.forEach((recipe) => {
-      recipesHtml += `<div class="recipe-card">
-      <h3 class="recipe-title" data-recipe='${JSON.stringify(
+      recipesHtml += `<div class="recipe-card my-8 text-center">
+      <img class="mx-auto my-2 w-500" src="${
+        recipe.image
+      }" alt="Image of ${recipe.title}" />
+      <h3 class="recipe-title inline mx-4 font-bold" data-recipe='${JSON.stringify(
         recipe
       )}' style="cursor:pointer;">${recipe.title}</h3>
-      <img src="${recipe.image}" alt="Image of ${recipe.title}" />
       <button onclick="toggleFavorite(this)" data-recipe='${JSON.stringify(
         recipe
       )}'>❤️</button></div>`;
@@ -225,4 +253,3 @@ function generateMissingIngredientsValues() {
 }
 generateMissingIngredientsValues();
 loadSessionStorage();
-
