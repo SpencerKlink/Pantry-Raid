@@ -27,7 +27,7 @@ document.getElementById("recipeForm").addEventListener("submit", function (e) {
       data.forEach((recipe) => {
         if (recipe.missedIngredientCount < allowedMissing) {
           recipesHtml += `<div class="recipe-card my-8">
-              <img src="${recipe.image}" alt="Image of ${recipe.title}" />
+              <img class="mx-auto my-2 w-500" src="${recipe.image}" alt="Image of ${recipe.title}" />
               <h3 class="recipe-title" data-recipe='${JSON.stringify(
                 recipe
               )}' style="cursor:pointer;">${recipe.title}</h3>
@@ -112,8 +112,8 @@ function showFavorites() {
   var favoritesHtml = "";
   if (favorites) {
     favorites.forEach((recipe) => {
-      favoritesHtml += `<div class=""recipe-card my-8 text-center"">
-      <img class="mx-auto my-2" src="${recipe.image}" alt="Image of ${recipe.title}" />
+      favoritesHtml += `<div class="recipe-card my-8 text-center">
+      <img class="mx-auto my-2 w-500" src="${recipe.image}" alt="Image of ${recipe.title}" />
       <h3 class="recipe-title recipe-title inline mx-4 font-bold" data-recipe='${JSON.stringify(
         recipe
       )}' style="cursor:pointer;">${recipe.title}</h3>
@@ -160,7 +160,7 @@ function loadSessionStorage() {
   if (sessionData) {
     sessionData.forEach((recipe) => {
       recipesHtml += `<div class="recipe-card my-8 text-center">
-      <img class="mx-auto my-2" src="${
+      <img class="mx-auto my-2 w-500" src="${
         recipe.image
       }" alt="Image of ${recipe.title}" />
       <h3 class="recipe-title inline mx-4 font-bold" data-recipe='${JSON.stringify(
