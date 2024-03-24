@@ -71,6 +71,27 @@ document.getElementById("showFavorites").addEventListener("click", function () {
   showFavorites();
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+  var howToUseBtn = document.getElementById("howToUseBtn");
+  var howToUseModal = document.getElementById("howToUseModal");
+
+  howToUseBtn.addEventListener("click", () => {
+      howToUseModal.classList.toggle("hidden");
+  });
+
+  howToUseModal.addEventListener("click", (event) => {
+      if (event.target === howToUseModal) {
+          howToUseModal.classList.add("hidden");
+      }
+  });
+  
+  document.querySelectorAll('#howToUseModal [onclick="toggleModal()"]').forEach(button => {
+      button.addEventListener("click", () => {
+          howToUseModal.classList.add("hidden");
+      });
+  });
+});    
+
 function showFavorites() {
   clearSearch();
   clearResults();
