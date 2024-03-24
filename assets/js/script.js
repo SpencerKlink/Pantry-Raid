@@ -11,7 +11,6 @@ document.getElementById("recipeForm").addEventListener("submit", function (e) {
   if (!ingredients) {
     console.log("No ingredients entered.");
     createAlert();
-    // alert("Please enter at least one ingredient.");
 
     return;
   }
@@ -60,9 +59,10 @@ document.getElementById("hamburger").addEventListener("click", function () {
 function toggleFavorite(button) {
   console.log("Toggling favorite:");
   var recipe = JSON.parse(button.getAttribute("data-recipe"));
+  var recipe = JSON.parse(button.getAttribute("data-recipe"));
 
   var favoritesArray = JSON.parse(localStorage.getItem("favorites")) || [];
-  favoritesArray.push(recipe);
+  favoritesArray.push(recipe);;
   localStorage.setItem("favorites", JSON.stringify(favoritesArray));
 }
 
@@ -78,9 +78,10 @@ function showFavorites() {
   var resultTitleEl = document.getElementById("resultsTitle");
   resultTitleEl.textContent = "Your Favorites";
 
+
   var favorites = JSON.parse(localStorage.getItem("favorites")) || [];
   console.log("Current favorites:", favorites);
-  var favoritesHtml = "";
+  var favoritesHtml = "";;
   if (favorites) {
     favorites.forEach((recipe) => {
       favoritesHtml += `<div class="recipe-card">
@@ -92,10 +93,11 @@ function showFavorites() {
         recipe
       )}'>❌</button></div>`;
     });
-    document.getElementById("recipes").innerHTML = favoritesHtml;
+      document.getElementById("recipes").innerHTML = favoritesHtml;
   }
   if (favorites.length === 0) {
     document.getElementById("recipes").innerHTML =
+     
       "<p>No favorites to display</p>";
   }
 }
@@ -111,6 +113,7 @@ function removeFavorite(button) {
   localStorage.setItem("favorites", JSON.stringify(newFavoritesArray));
   showFavorites();
 }
+
 
 function prepareForDetailsPage(recipeData) {
   console.log("Preparing for details page:", recipeData);
@@ -187,7 +190,7 @@ function createAlert() {
     alert.setAttribute("id", "alert");
     alert.innerHTML = `<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
     <strong class="font-bold">No Ingredients Entered</strong>
-    <span class="block sm:inline">Please enter at least one ingredient</span>
+    <p>Please enter at least one ingredient</p>
     <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
     <svg class="fill-current h-6 w-6 text-red-500" id="alert-button" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
     </span></div>`;
@@ -208,4 +211,18 @@ function clearAlert() {
   recipeFormEl.removeChild(alert);
 }
 
+function generateMissingIngredientsValues() {
+  var missingIngredientEl = document.getElementById("missingIngredients");
+  for (let i = 0; i <= 10; i++) {
+    var ingredient = document.createElement("option");
+    ingredient.setAttribute("value", `${i}`);
+    ingredient.textContent = i;
+    if (i === 0) {
+      ingredient.textContent = "Allowed Missing Ingredients";
+    }
+    missingIngredientEl.append(ingredient);
+  }
+}
+generateMissingIngredientsValues();
 loadSessionStorage();
+
