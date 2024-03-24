@@ -39,9 +39,8 @@ document.getElementById("recipeForm").addEventListener("submit", function (e) {
         }
       });
       if (recipesHtml.length === 0) {
-        console.log(recipesHtml.length);
         document.getElementById("recipes").innerHTML =
-          "<p>No matching recipes. Please try again</p>";
+          "<p class='col-span-1 sm:col-span-full md:col-span-full lg:col-span-full'>No matching recipes. Please try again</p>";
       } else {
         sessionStorage.setItem("searchResults", JSON.stringify(recipeResults));
         loadSessionStorage();
@@ -49,7 +48,9 @@ document.getElementById("recipeForm").addEventListener("submit", function (e) {
     })
     .catch((error) => {
       console.log("Error fetching data:", error);
-      document.getElementById("recipes").innerHTML = "<p>Please try again.</p>";
+      document.getElementById(
+        "recipes"
+      ).innerHTML = `<p class='col-span-1 sm:col-span-full md:col-span-full lg:col-span-full>Error. Please try again.</p>`;
     });
 });
 
@@ -231,6 +232,7 @@ function createAlert() {
     var alert = document.createElement("div");
     alert.setAttribute("role", "alert");
     alert.setAttribute("id", "alert");
+    alert.classList.add("p-3");
     alert.innerHTML = `<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
     <strong class="font-bold">No Ingredients Entered</strong>
     <p>Please enter at least one ingredient</p>
@@ -266,5 +268,6 @@ function generateMissingIngredientsValues() {
     missingIngredientEl.append(ingredient);
   }
 }
+
 generateMissingIngredientsValues();
 loadSessionStorage();

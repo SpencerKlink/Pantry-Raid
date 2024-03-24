@@ -1,7 +1,7 @@
 # Pantry Raid
 
 ## Screenshot Of Pantry Raid
-![alt text](assets/images/pantrysc.jpeg "screenshot of pantry raid")
+![alt text](assets/images/scos.jpeg "screenshot of pantry raid")
 
 ## Project Background
 Pantry Raid was created to address the common dilemma faced by all of us: "What can I cook with the ingredients I already have at home?" In addition to this, there was a growing need to easily access nutritional information to make healthier cooking decisions without the hassle of searching through multiple websites or apps. Pantry Raid aims to simplify meal planning and preparation by offering a streamlined process for finding recipes based on available ingredients and providing immediate access to their nutritional content. Pantry Raid is a web application designed to help users find recipes based on ingredients they have at hand and view detailed nutritional information for each recipe. Pantry Raid utilizes the Spoonacular API for recipe searches and the Nutritionix API for fetching nutritional data, it provides a seamless experience for anyone looking to cook with what they've got in the pantry while keeping nutritional content in mind.
