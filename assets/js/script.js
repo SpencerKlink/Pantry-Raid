@@ -132,7 +132,7 @@ function showFavorites() {
   }
   if (favorites.length === 0) {
     document.getElementById("recipes").innerHTML =
-      "<p>No favorites to display</p>";
+      "<p class='col-span-1 sm:col-span-full md:col-span-full lg:col-span-full'>No favorites to display</p>";
   }
 }
 
