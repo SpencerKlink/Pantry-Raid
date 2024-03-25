@@ -190,7 +190,7 @@ function clearSearch() {
   var mealTypeInputEl = document.getElementById("mealType");
   mealTypeInputEl.value = "";
   var missingIngredientsEl = document.getElementById("missingIngredients");
-  missingIngredientsEl.value = "";
+  missingIngredientsEl.value = "0";
 }
 
 function createClearButton() {
