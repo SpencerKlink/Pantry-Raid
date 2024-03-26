@@ -38,8 +38,11 @@ Pantry Raid was created to address the common dilemma faced by all of us: "What 
 ## Project Link
  * https://github.com/spencerklink/pantry-raid
 
- ## Deployed Site
+## Deployed Site
  * https://spencerklink.github.io/Pantry-Raid/
+
+## Presentation Link
+ * https://www.canva.com/design/DAGALu27A78/074TAiWWmuPuvF1NiZI-tg/view?utm_content=DAGALu27A78&utm_campaign=designshare&utm_medium=link&utm_source=editor
  
 
 
