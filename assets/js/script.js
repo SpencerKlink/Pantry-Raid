@@ -152,11 +152,11 @@ function loadSessionStorage() {
       sessionData.forEach((recipe) => {
         recipesHtml += createRecipeCard(recipe, "❤️");
         });
+      document.getElementById("recipes").innerHTML = recipesHtml;
+      document.getElementById("searchResults").classList.remove("hidden");
+      console.log("results pulled from session storage");
+      createClearButton();
       }
-    document.getElementById("recipes").innerHTML = recipesHtml;
-    document.getElementById("searchResults").classList.remove("hidden");
-    console.log("results pulled from session storage");
-    createClearButton();
   }
 
 function clearSearch() {
@@ -181,8 +181,6 @@ function createClearButton() {
   buttonContainer.append(clearButton);
   searchResultsEl.append(buttonContainer);
 
-  // searchResultsEl.append(clearButton);
-
   clearButton.addEventListener("click", function () {
     clearResults();
     clearSearch();
@@ -191,13 +189,11 @@ function createClearButton() {
 
 function clearResults() {
   var searchResultsEl = document.getElementById("searchResults");
-  // var clearButtonEl = document.getElementById("clearButton");
   var buttonContainerEl = document.getElementById("buttonContainer");
   sessionStorage.removeItem("searchResults");
   searchResultsEl.classList.add("hidden");
   if (buttonContainerEl) {
     searchResultsEl.removeChild(buttonContainerEl);
-    // searchResultsEl.removeChild(clearButtonEl);
   }
 }
 
