@@ -26,15 +26,7 @@ document.getElementById("recipeForm").addEventListener("submit", function (e) {
       var recipeResults = [];
       data.forEach((recipe) => {
         if (recipe.missedIngredientCount < allowedMissing) {
-          recipesHtml += `<div class="recipe-card my-3 md:hover:opacity-60 flex flex-col h-full">
-              <img class="mx-auto my-2 w-500" src="${
-                recipe.image
-              }" alt="Image of ${recipe.title}" />
-              <h3 class="recipe-title" data-recipe='${JSON.stringify(
-                recipe
-              )}' style="cursor:pointer;">${recipe.title}</h3>
-              <button onclick="toggleFavorite(${recipe})">❤️</button>
-          </div>`;
+          recipesHtml += createRecipeCard(recipe, "❤️");
           recipeResults.push(recipe);
         }
       });
@@ -117,23 +109,15 @@ function showFavorites() {
   var favoritesHtml = "";
   if (favorites) {
     favorites.forEach((recipe) => {
-      favoritesHtml += `<div class="recipe-card my-3 text-center md:hover:opacity-60 flex flex-col h-full">
-      <img class="mx-auto my-2 w-500" src="${recipe.image}" alt="Image of ${
-        recipe.title
-      }" />
-      <h3 class="recipe-title recipe-title inline mx-4 font-bold" data-recipe='${JSON.stringify(
-        recipe
-      )}' style="cursor:pointer;">${recipe.title}</h3>
-      <button onclick="removeFavorite(this)" data-recipe='${JSON.stringify(
-        recipe
-      )}'>❌</button></div>`;
-    });
+      favoritesHtml += createRecipeCard(recipe, "❌");
     document.getElementById("recipes").innerHTML = favoritesHtml;
+    })
   }
   if (favorites.length === 0) {
     document.getElementById("recipes").innerHTML =
       "<p class='col-span-1 sm:col-span-full md:col-span-full lg:col-span-full'>No favorites to display</p>";
-  }
+    }
+
 }
 
 function removeFavorite(button) {
@@ -164,25 +148,16 @@ document.addEventListener("click", function (event) {
 function loadSessionStorage() {
   var sessionData = JSON.parse(sessionStorage.getItem("searchResults"));
   var recipesHtml = "";
-  if (sessionData) {
-    sessionData.forEach((recipe) => {
-      recipesHtml += `<div class="recipe-card my-3 text-center md:hover:opacity-60 flex flex-col h-full">
-      <img class="mx-auto my-2 w-500" src="${recipe.image}" alt="Image of ${
-        recipe.title
-      }" />
-      <h3 class="recipe-title inline mx-4 font-bold" data-recipe='${JSON.stringify(
-        recipe
-      )}' style="cursor:pointer;">${recipe.title}</h3>
-      <button onclick="toggleFavorite(this)" data-recipe='${JSON.stringify(
-        recipe
-      )}'>❤️</button></div>`;
-    });
+    if (sessionData) {
+      sessionData.forEach((recipe) => {
+        recipesHtml += createRecipeCard(recipe, "❤️");
+        });
+      }
     document.getElementById("recipes").innerHTML = recipesHtml;
     document.getElementById("searchResults").classList.remove("hidden");
     console.log("results pulled from session storage");
     createClearButton();
   }
-}
 
 function clearSearch() {
   var ingredientsInputEl = document.getElementById("ingredientsInput");
@@ -224,6 +199,28 @@ function clearResults() {
     searchResultsEl.removeChild(buttonContainerEl);
     // searchResultsEl.removeChild(clearButtonEl);
   }
+}
+
+function createRecipeCard(recipe, buttonIcon) {
+  var html = `<div class="recipe-card my-3 text-center md:hover:opacity-60 flex flex-col h-full">
+  <img class="mx-auto my-2 w-500" src="${recipe.image}" onerror="this.onerror=null;this.src='./assets/images/missing-image.png';" alt="Image of ${
+    recipe.title
+  }" />
+  <h3 class="recipe-title inline mx-4 font-bold" data-recipe='${JSON.stringify(
+    recipe
+  )}' style="cursor:pointer;">${recipe.title}</h3>`
+
+  if (buttonIcon === "❤️") {
+    html += `<button onclick="toggleFavorite(this)" data-recipe='${JSON.stringify(
+    recipe
+  )}'>${buttonIcon}</button></div>`;
+  } else {
+    html += `<button onclick="removeFavorite(this)" data-recipe='${JSON.stringify(
+    recipe
+  )}'>${buttonIcon}</button></div>`;
+  }
+
+  return html;
 }
 
 function createAlert() {
