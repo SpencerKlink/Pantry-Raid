@@ -3,7 +3,7 @@ stringifyRecipeIngredients(recipeData);
 function displayRecipeDetails(recipeData) {
   var detailsElement = document.getElementById("recipeDetails");
   var titleEl = document.getElementById("recipeTitle");
-  var html = `<img src="${recipeData.image}" alt="Image of ${recipeData.title}" class="mx-auto block max-w-4xl w-full h-auto" />`;
+  var html = `<img src="${recipeData.image}" onerror="this.onerror=null;this.src='./assets/images/missing-image2.png';" alt="Image of ${recipeData.title}" class="mx-auto block max-w-4xl w-full h-auto" />`;
   detailsElement.innerHTML = html;
   titleEl.innerHTML = recipeData.title;
 }

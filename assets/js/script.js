@@ -27,9 +27,11 @@ document.getElementById("recipeForm").addEventListener("submit", function (e) {
       data.forEach((recipe) => {
         if (recipe.missedIngredientCount < allowedMissing) {
           recipesHtml += `<div class="recipe-card my-3 md:hover:opacity-60 flex flex-col h-full">
-              <img class="mx-auto my-2 w-500" src="${
-                recipe.image
-              }" alt="Image of ${recipe.title}" />
+          <img class="mx-auto my-2 w-auto" src="${
+            recipe.image
+          }" onerror="this.onerror=null;this.src='./assets/images/missing-image.png';" alt="Image of ${
+            recipe.title
+          }" />
               <h3 class="recipe-title" data-recipe='${JSON.stringify(
                 recipe
               )}' style="cursor:pointer;">${recipe.title}</h3>
@@ -118,7 +120,9 @@ function showFavorites() {
   if (favorites) {
     favorites.forEach((recipe) => {
       favoritesHtml += `<div class="recipe-card my-3 text-center md:hover:opacity-60 flex flex-col h-full">
-      <img class="mx-auto my-2 w-500" src="${recipe.image}" alt="Image of ${
+      <img class="mx-auto my-2 w-auto" src="${
+        recipe.image
+      }" onerror="this.onerror=null;this.src='./assets/images/missing-image.png';"alt="Image of ${
         recipe.title
       }" />
       <h3 class="recipe-title recipe-title inline mx-4 font-bold" data-recipe='${JSON.stringify(
@@ -167,7 +171,9 @@ function loadSessionStorage() {
   if (sessionData) {
     sessionData.forEach((recipe) => {
       recipesHtml += `<div class="recipe-card my-3 text-center md:hover:opacity-60 flex flex-col h-full">
-      <img class="mx-auto my-2 w-500" src="${recipe.image}" alt="Image of ${
+      <img class="mx-auto my-2 w-auto" src="${
+        recipe.image
+      }" onerror="this.onerror=null;this.src='./assets/images/missing-image.png';"alt="Image of ${
         recipe.title
       }" />
       <h3 class="recipe-title inline mx-4 font-bold" data-recipe='${JSON.stringify(
