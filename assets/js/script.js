@@ -203,7 +203,7 @@ function clearResults() {
 
 function createRecipeCard(recipe, buttonIcon) {
   var html = `<div class="recipe-card my-3 text-center md:hover:opacity-60 flex flex-col h-full">
-  <img class="mx-auto my-2 w-500" src="${recipe.image}" onerror="this.onerror=null;this.src='./assets/images/missing-image2.png';" alt="Image of ${
+  <img class="mx-auto my-2 w-500" src="${recipe.image}" onerror="this.onerror=null;this.src='./assets/images/missing-image.png';" alt="Image of ${
     recipe.title
   }" />
   <h3 class="recipe-title inline mx-4 font-bold" data-recipe='${JSON.stringify(
